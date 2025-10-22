@@ -1,0 +1,43 @@
+@startuml
+!include <C4/C4_Container>
+
+Person(customer, "Customer")
+
+Boundary(clientApps, "Client Apps") {
+    Container(webUi, "Web UI")
+    Container(androidApp, "Mobile")
+    Container(tvApp, "TV")
+}
+
+Boundary(legacy, "") {
+    Container(legacyApp, "Legacy App")
+    ContainerDb(legacyDb, "Legacy Database")
+    Rel(legacyApp, legacyDb, "Stores data")
+}
+
+Container(apiGateway, "API Gateway")
+
+System_Ext(recommendationsService, "Recommendations Service")
+System_Ext(paymentGateway, "Payments")
+System_Ext(thirpartyMovieServices, "3rd Party Movie Services")
+
+Container(moviesService, "Movies Service")
+
+Boundary(events, "") {
+    Container(eventsService, "Events Service")
+    ContainerQueue(eventsQueue, "Events queue")
+    Rel(eventsService, eventsQueue, "Stores events")
+}
+
+Rel(customer, clientApps, "Uses via phone, web-browser or TV")
+Rel(clientApps, apiGateway, "")
+
+Rel(legacyApp, paymentGateway, "")
+Rel(legacyApp, thirpartyMovieServices, "")
+Rel(legacyApp, recommendationsService, "")
+
+Rel(apiGateway, legacyApp, "")
+Rel(apiGateway, eventsService, "")
+Rel(apiGateway, moviesService, "")
+
+@enduml
