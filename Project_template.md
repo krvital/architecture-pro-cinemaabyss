@@ -60,11 +60,15 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
+![api-test-results](/Users/vi/Yandex.Disk.localized/Скриншоты/api-test-results.png)
+
+![image-20251027122219736](/Users/vi/Projects/krvital/yandex-practicum-architecture/architecture-pro-cinemaabyss/kafka-topics.png)
 
 ## Задание 3
 
 Команда начала переезд в Kubernetes для лучшего масштабирования и повышения надежности. 
 Вам, как архитектору осталось самое сложное:
+
  - реализовать CI/CD для сборки прокси сервиса
  - реализовать необходимые конфигурационные файлы для переключения трафика.
 
@@ -255,15 +259,15 @@ cat .docker/config.json | base64
   kubectl apply -f src/kubernetes/ingress.yaml
   ```
   9. Добавьте в /etc/hosts
-  127.0.0.1 cinemaabyss.example.com
+    127.0.0.1 cinemaabyss.example.com
 
   10. Вызовите
   ```bash
   minikube tunnel
   ```
   11. Вызовите https://cinemaabyss.example.com/api/movies
-  Вы должны увидеть вывод списка фильмов
-  Можно поэкспериментировать со значением   MOVIES_MIGRATION_PERCENT в src/kubernetes/configmap.yaml и убедится, что вызовы movies уходят полностью в новый сервис
+    Вы должны увидеть вывод списка фильмов
+    Можно поэкспериментировать со значением   MOVIES_MIGRATION_PERCENT в src/kubernetes/configmap.yaml и убедится, что вызовы movies уходят полностью в новый сервис
 
   12. Запустите тесты из папки tests/postman
   ```bash
