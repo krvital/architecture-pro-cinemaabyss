@@ -434,7 +434,12 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 
 Приложите скриншот работы circuit breaker'а
 
+![image-20251027214538811](circuit-breaker-1.png)
+
+![2025-10-27_21-47-37](circuit-breaker-2.png)
+
 Удаляем все
+
 ```bash
 istioctl uninstall --purge
 kubectl delete namespace istio-system
