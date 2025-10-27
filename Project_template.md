@@ -6,7 +6,7 @@
 
 Результат представьте в виде контейнерной диаграммы в нотации С4.
 
-![](/Users/vi/Projects/krvital/yandex-practicum-architecture/architecture-pro-cinemaabyss/schemas/Architecture_Container.png)
+![](schemas/Architecture_Container.png)
 
 
 ## Задание 2
@@ -60,9 +60,9 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
-![api-test-results](/Users/vi/Yandex.Disk.localized/Скриншоты/api-test-results.png)
+![api-test-results](api-test-results.png)
 
-![image-20251027122219736](/Users/vi/Projects/krvital/yandex-practicum-architecture/architecture-pro-cinemaabyss/kafka-topics.png)
+![image-20251027122219736](kafka-topics.png)
 
 ## Задание 3
 
@@ -259,6 +259,7 @@ cat .docker/config.json | base64
   kubectl apply -f src/kubernetes/ingress.yaml
   ```
   9. Добавьте в /etc/hosts
+
     127.0.0.1 cinemaabyss.example.com
 
   10. Вызовите
@@ -266,6 +267,7 @@ cat .docker/config.json | base64
   minikube tunnel
   ```
   11. Вызовите https://cinemaabyss.example.com/api/movies
+
     Вы должны увидеть вывод списка фильмов
     Можно поэкспериментировать со значением   MOVIES_MIGRATION_PERCENT в src/kubernetes/configmap.yaml и убедится, что вызовы movies уходят полностью в новый сервис
 
@@ -276,8 +278,16 @@ cat .docker/config.json | base64
   Часть тестов с health-чек упадет, но создание событий отработает.
   Откройте логи event-service и сделайте скриншот обработки событий
 
+![image-20251027222008966](events-service-log.png)
+
+
+
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+
+![image-20251027194642230](movies.png)
+
+![image-20251027194312493](postman-results.png)
 
 
 ## Задание 4

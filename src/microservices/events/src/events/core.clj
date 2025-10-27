@@ -24,7 +24,7 @@
     (get env env-var default)))
 
 (defn get-kafka-brokers []
-  (get-env "KAFKA_BROKERS" "localhost:60402"))
+  (get-env "KAFKA_BROKERS" "localhost:54041"))
 
 (defroutes handler
   (context "/api/events" []

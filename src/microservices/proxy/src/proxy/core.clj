@@ -7,6 +7,7 @@
    [org.httpkit.server :as http.server])
   (:gen-class))
 
+
 (defn lottery [prob]
   (<= (rand-int 101) prob))
 
@@ -55,9 +56,10 @@
       monolith-url)))
 
 (defn app [req]
-  (if (= (:uri req) "/health")
+  (if (= (:uri req) "/api/proxy/health")
     {:status 200
-     :body "ok"}
+     :headers {"Content-Type" "application/json"}
+     :body "{\"status\":true}"}
     (proxy-pass req (get-target-url req))))
 
 (defn -main [& args]
@@ -81,8 +83,8 @@
 
   (stop-server)
 
-  (require '[clojure.repl.deps :as deps])
-  (deps/sync-deps)
+  (do (require '[clojure.repl.deps :as deps])
+      (deps/sync-deps))
 
 ;
   )
