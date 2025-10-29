@@ -4,40 +4,55 @@
 Person(customer, "Customer")
 
 Boundary(clientApps, "Client Apps") {
-    Container(webUi, "Web UI")
-    Container(androidApp, "Mobile")
+    Container(webUi, "Web UI", "React")
+    Container(mobileApp, "Mobile", "Flutter")
     Container(tvApp, "TV")
 }
 
-Boundary(legacy, "") {
-    Container(legacyApp, "Legacy App")
-    ContainerDb(legacyDb, "Legacy Database")
+Container(apiGateway, "API Gateway", "Istio Ingress Gateway", "Route API Calls\nValidates JWT")
+
+Boundary(coreServices, "Core Services") {
+    Boundary(userSevice, "User Service") {
+        Container(userServiceApp, "User Service App", "Go + Gin + golang-jwt", "Manage users and auth")
+        ContainerDb(userServiceDb, "User Service Db", "PostgreSQL")
+        Rel(userServiceApp, userServiceDb, "Stores data")
+    }
+
+    Boundary(moviesService, "Movies Metadata Service") {
+        Container(moviesServiceApp, "Movies Service App", "Go + Gin")
+        ContainerDb(moviesServiceDb, "Movies Service Db", "PostgreSQL")
+        Rel(moviesServiceApp, moviesServiceDb, "Stores data")
+    }
+
+    Boundary(eventsService, "Events System") {
+        Container(eventsServiceApp, "Events Service", "Go + go-kafka")
+        ContainerQueue(eventsServiceQueue, "Events queue", "Kafka")
+        Rel(eventsServiceApp, eventsServiceQueue, "Stores events")
+    }
+}
+
+Boundary(legacy, "Legacy System") {
+    Container(legacyApp, "Legacy App", "Go")
+    ContainerDb(legacyDb, "Legacy Database", "PostgreSQL")
     Rel(legacyApp, legacyDb, "Stores data")
 }
 
-Container(apiGateway, "API Gateway")
-
 System_Ext(recommendationsService, "Recommendations Service")
 System_Ext(paymentGateway, "Payments")
-System_Ext(thirpartyMovieServices, "3rd Party Movie Services")
+System_Ext(thirdPartyMovieServices, "3rd Party Movie Services")
 
-Container(moviesService, "Movies Service")
-
-Boundary(events, "") {
-    Container(eventsService, "Events Service")
-    ContainerQueue(eventsQueue, "Events queue")
-    Rel(eventsService, eventsQueue, "Stores events")
-}
 
 Rel(customer, clientApps, "Uses via phone, web-browser or TV")
-Rel(clientApps, apiGateway, "")
+
+Rel(clientApps, apiGateway, "API Calls")
 
 Rel(legacyApp, paymentGateway, "")
-Rel(legacyApp, thirpartyMovieServices, "")
+Rel(legacyApp, thirdPartyMovieServices, "")
 Rel(legacyApp, recommendationsService, "")
 
 Rel(apiGateway, legacyApp, "")
-Rel(apiGateway, eventsService, "")
-Rel(apiGateway, moviesService, "")
+Rel(apiGateway, eventsServiceApp, "")
+Rel(apiGateway, moviesServiceApp, "")
+Rel(apiGateway, userServiceApp, "")
 
 @enduml
