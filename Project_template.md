@@ -2,10 +2,11 @@
 
 ## Задание 1
 
-1. Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
+Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
+
 Результат представьте в виде контейнерной диаграммы в нотации С4.
-Добавьте ссылку на файл в этот шаблон
-[ссылка на файл](ссылка)
+
+![](schemas/Architecture_Container.png)
 
 
 ## Задание 2
@@ -59,11 +60,15 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
+![api-test-results](api-test-results.png)
+
+![image-20251027122219736](kafka-topics.png)
 
 ## Задание 3
 
 Команда начала переезд в Kubernetes для лучшего масштабирования и повышения надежности. 
 Вам, как архитектору осталось самое сложное:
+
  - реализовать CI/CD для сборки прокси сервиса
  - реализовать необходимые конфигурационные файлы для переключения трафика.
 
@@ -254,15 +259,17 @@ cat .docker/config.json | base64
   kubectl apply -f src/kubernetes/ingress.yaml
   ```
   9. Добавьте в /etc/hosts
-  127.0.0.1 cinemaabyss.example.com
+
+    127.0.0.1 cinemaabyss.example.com
 
   10. Вызовите
   ```bash
   minikube tunnel
   ```
   11. Вызовите https://cinemaabyss.example.com/api/movies
-  Вы должны увидеть вывод списка фильмов
-  Можно поэкспериментировать со значением   MOVIES_MIGRATION_PERCENT в src/kubernetes/configmap.yaml и убедится, что вызовы movies уходят полностью в новый сервис
+
+    Вы должны увидеть вывод списка фильмов
+    Можно поэкспериментировать со значением   MOVIES_MIGRATION_PERCENT в src/kubernetes/configmap.yaml и убедится, что вызовы movies уходят полностью в новый сервис
 
   12. Запустите тесты из папки tests/postman
   ```bash
@@ -271,8 +278,16 @@ cat .docker/config.json | base64
   Часть тестов с health-чек упадет, но создание событий отработает.
   Откройте логи event-service и сделайте скриншот обработки событий
 
+![image-20251027222008966](events-service-log.png)
+
+
+
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+
+![image-20251027194642230](movies.png)
+
+![image-20251027194312493](postman-results.png)
 
 
 ## Задание 4
@@ -349,8 +364,12 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
+![helm-install-log](helm-install-log.png)
+
+![image-20251027210312389](helm-api-movies.png)
 
 # Задание 5
+
 Компания планирует активно развиваться и для повышения надежности, безопасности, реализации сетевых паттернов типа Circuit Breaker и канареечного деплоя вам как архитектору необходимо развернуть istio и настроить circuit breaker для monolith и movies сервисов.
 
 ```bash
@@ -415,7 +434,12 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 
 Приложите скриншот работы circuit breaker'а
 
+![image-20251027214538811](circuit-breaker-1.png)
+
+![2025-10-27_21-47-37](circuit-breaker-2.png)
+
 Удаляем все
+
 ```bash
 istioctl uninstall --purge
 kubectl delete namespace istio-system
